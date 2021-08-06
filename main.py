@@ -52,10 +52,9 @@ def main():
 
     # Create the model
     model = create_model(args)
-
     modules_to_replace = quan.find_modules_to_quantize(model, args.quan)
     model = quan.replace_module_by_names(model, modules_to_replace)
-    tbmonitor.writer.add_graph(model, input_to_model=train_loader.dataset[0][0].unsqueeze(0))
+    #tbmonitor.writer.add_graph(model, input_to_model=train_loader.dataset[0][0].unsqueeze(0))
     logger.info('Inserted quantizers into the original model')
 
     if args.device.gpu and not args.dataloader.serialized:
@@ -90,14 +89,14 @@ def main():
     else:  # training
         if args.resume.path or args.pre_trained:
             logger.info('>>>>>>>> Epoch -1 (pre-trained model evaluation)')
-            top1, top5, _ = process.validate(val_loader, model, criterion,
+            top1, top5, _ = process.validate(test_loader, model, criterion,
                                              start_epoch - 1, monitors, args)
             perf_scoreboard.update(top1, top5, start_epoch - 1)
         for epoch in range(start_epoch, args.epochs):
             logger.info('>>>>>>>> Epoch %3d' % epoch)
             t_top1, t_top5, t_loss = process.train(train_loader, model, criterion, optimizer,
                                                    lr_scheduler, epoch, monitors, args)
-            v_top1, v_top5, v_loss = process.validate(val_loader, model, criterion, epoch, monitors, args)
+            v_top1, v_top5, v_loss = process.validate(test_loader, model, criterion, epoch, monitors, args)
 
             tbmonitor.writer.add_scalars('Train_vs_Validation/Loss', {'train': t_loss, 'val': v_loss}, epoch)
             tbmonitor.writer.add_scalars('Train_vs_Validation/Top1', {'train': t_top1, 'val': v_top1}, epoch)

@@ -35,7 +35,7 @@ class LsqQuan(Quantizer):
                 self.thd_pos = 2 ** (bit - 1) - 1
 
         self.per_channel = per_channel
-        self.s = t.nn.Parameter(t.ones(1))
+        self.s = t.nn.Parameter(t.ones(1)*0.3)
 
     def init_from(self, x, *args, **kwargs):
         if self.per_channel:
