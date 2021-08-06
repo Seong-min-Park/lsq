@@ -22,7 +22,7 @@ class QuanConv2d(t.nn.Conv2d):
     def forward(self, x):
         quantized_weight = self.quan_w_fn(self.weight)
         quantized_act = self.quan_a_fn(x)
-        return self._conv_forward(quantized_act, quantized_weight, self.bias)
+        return self._conv_forward(quantized_act, quantized_weight)
 
 
 class QuanLinear(t.nn.Linear):
@@ -41,7 +41,7 @@ class QuanLinear(t.nn.Linear):
     def forward(self, x):
         quantized_weight = self.quan_w_fn(self.weight)
         quantized_act = self.quan_a_fn(x)
-        return t.nn.functional.linear(quantized_act, quantized_weight, self.bias)
+        return t.nn.functional.linear(quantized_act, quantized_weight)
 
 
 QuanModuleMapping = {
