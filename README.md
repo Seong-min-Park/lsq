@@ -30,7 +30,7 @@ First install library dependencies within an Anaconda environment.
 # Create a environment with Python 3.8
 conda create -n lsq python=3.8
 # PyTorch GPU version >= 1.5
-conda install pytorch torchvision cudatoolkit=10.1 -c pytorch
+conda install pytorch==1.7.1 torchvision==0.8.2 cudatoolkit=10.1 -c pytorch
 # Tensorboard visualization tool
 conda install tensorboard
 # Miscellaneous
